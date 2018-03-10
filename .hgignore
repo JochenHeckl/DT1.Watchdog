@@ -1,0 +1,9 @@
+syntax: glob
+.vs/
+DT1.Watchdog.Android/bin/
+DT1.Watchdog.Android/obj/
+DT1.Watchdog.Common/bin/
+DT1.Watchdog.Common/obj/
+DT1.Watchdog/bin/
+DT1.Watchdog/obj/
+DT1.Watchdog.Android/DT1.Watchdog.Android.csproj.user
