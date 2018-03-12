@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DT1.Watchdog.Common.Data
+namespace DT1.Watchdog.Common
 {
     public enum AlertNotification
     {
@@ -21,7 +21,9 @@ namespace DT1.Watchdog.Common.Data
         string MostRecentDT1DeviceDeviceAddress { get; set; }
         DateTimeOffset LastValidReading { get; set; }
         BleConnectionStatus DT1HardwareConnectionStatus { get; set; }
+        string WatchdogDeviceName { get; set; }
 
         void PersistReading(GlucoseReading reading);
+        string GetDevicePresentString(string deviceName);
     }
 }

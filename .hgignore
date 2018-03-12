@@ -7,3 +7,7 @@ DT1.Watchdog.Common/obj/
 DT1.Watchdog/bin/
 DT1.Watchdog/obj/
 DT1.Watchdog.Android/DT1.Watchdog.Android.csproj.user
+DT1WatchdogFeather/Debug/
+DT1WatchdogFeather/Release/
+DT1WatchdogFeather/DT1WatchdogFeather.vcxproj.user
+DT1WatchdogFeather/__vm/

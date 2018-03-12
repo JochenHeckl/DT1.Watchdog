@@ -3,30 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using DT1.Watchdog.Common;
 using DT1.Watchdog.Common.Logging;
+using DT1.Watchdog.ViewModel;
 using Xamarin.Forms;
 
 namespace DT1.Watchdog
 {
 	public partial class App : Application
 	{
-
-        public App ( IContainer ioCContainerIn )
+        public App ( ContainerBuilder builder )
 		{
-            ioCContainer = ioCContainerIn;
-
-            log = ioCContainer.Resolve<ILog>();
-            log.Debug("Starting DT1.Watchdog Application");
-
+            BootstrapApp(builder);
 
             InitializeComponent();
 
-			MainPage = new DT1.Watchdog.MainPage();
-		}
+            MainPage = new DT1.Watchdog.MainPage();
+            MainPage.BindingContext = Bootstrap.Container.Resolve<MainPageViewModel>();
 
-		protected override void OnStart ()
+            log = Bootstrap.Container.Resolve<ILog>();
+            log.Debug("Starting DT1.Watchdog Application");
+
+        }
+
+        private void BootstrapApp(ContainerBuilder builder)
+        {
+            builder.RegisterType<MainPageViewModel>().SingleInstance();
+            Bootstrap.Container = builder.Build();
+        }
+
+        protected override void OnStart ()
 		{
-			// Handle when your app starts
+            var bleService = Bootstrap.Container.Resolve<IBleScanService>();
+            bleService.ScanForDevice();
 		}
 
 		protected override void OnSleep ()
@@ -39,7 +48,6 @@ namespace DT1.Watchdog
 			// Handle when your app resumes
 		}
 
-        private IContainer ioCContainer;
         private ILog log;
 	}
 }

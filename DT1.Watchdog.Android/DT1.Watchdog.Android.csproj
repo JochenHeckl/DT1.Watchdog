@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -52,6 +55,9 @@
   <ItemGroup>
     <PackageReference Include="Autofac">
       <Version>4.6.2</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.BluetoothLE">
+      <Version>5.3.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="25.4.0.2" />
@@ -65,6 +71,8 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\BleScanServicePluginBluetoothLE.cs" />
+    <Compile Include="Service\DT1WatchdogDataServiceLocalStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -87,17 +95,17 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DT1.Watchdog.Common\DT1.Watchdog.Common.csproj">
       <Project>{482aa762-5ee9-45a5-8a15-103526b9b4de}</Project>
       <Name>DT1.Watchdog.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DT1.Watchdog\DT1.Watchdog.csproj">
-      <Project>{32B72F70-4668-4D89-A548-0D8152D19860}</Project>
+      <Project>{f9097cc7-a290-48a7-b8d7-2bec788e1942}</Project>
       <Name>DT1.Watchdog</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

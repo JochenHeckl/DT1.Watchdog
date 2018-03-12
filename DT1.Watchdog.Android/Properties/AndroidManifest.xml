@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.DT1.Watchdog" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="23" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<application android:label="DT1.Watchdog.Android"></application>
 </manifest>
