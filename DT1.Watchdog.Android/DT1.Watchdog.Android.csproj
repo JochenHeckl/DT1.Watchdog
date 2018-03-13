@@ -72,7 +72,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BleScanServicePluginBluetoothLE.cs" />
-    <Compile Include="Service\DT1WatchdogDataServiceLocalStorage.cs" />
+    <Compile Include="Service\DataServiceLocalStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

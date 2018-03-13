@@ -16,10 +16,11 @@ namespace DT1.Watchdog.Common
         Disconnected
     }
 
-    public interface IDT1WatchdogDataService
+    public interface IDataService
     {
         string MostRecentDT1DeviceDeviceAddress { get; set; }
-        DateTimeOffset LastValidReading { get; set; }
+		GlucoseReading MostRecentValidReading { get; }
+		GlucoseReading MostRecentReading { get; }
         BleConnectionStatus DT1HardwareConnectionStatus { get; set; }
         string WatchdogDeviceName { get; set; }
 

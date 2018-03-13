@@ -12,13 +12,18 @@
             Order="Primary"
             Priority="0"
             Command="{Binding OpenSettingsCommand}"/>
-        <ToolbarItem Order="Secondary" Text="Item 2" Priority="1" />
+        <ToolbarItem
+            Text="{local:TextResource ResourceKey=ScanForDeviceLabel}"
+            Order="Secondary"
+            Priority="1"
+            Command="{Binding ScanForDeviceCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-        <Label Text="{Binding DevicePresenceLabel}" FontSize="14" />
-        <Button Text="Scan" Command="{Binding ScanNowCommand}"/>
+    <StackLayout Margin="4">
+        <Label Text="{Binding DeviceStatus}" FontSize="Default" LineBreakMode="WordWrap" Margin="4"/>
     </StackLayout>
+
+    
 
 
 </ContentPage>

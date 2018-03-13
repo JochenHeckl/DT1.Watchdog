@@ -13,8 +13,9 @@
             Command="{Binding ApplySettingsCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-            
+    <StackLayout Margin="4">
+        <Label Text="{local:TextResource ResourceKey=WatchdogBleDeviceNameLabel}" Margin="4"/>
+        <Entry Text="{Binding WatchdogBleDeviceName}" Margin="4"/>
     </StackLayout>
     
 </ContentPage>

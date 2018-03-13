@@ -5,47 +5,58 @@ using System.Windows.Input;
 using DT1.Watchdog.Common;
 using System;
 using Xamarin.Forms;
+using Autofac;
 
 namespace DT1.Watchdog.ViewModel
 {
-    public class MainPageViewModel : ViewModelBase
+    class MainPageViewModel : ViewModelBase
     {
-        public MainPageViewModel(ILog logIn, IBleScanService scanServiceIn, IDT1WatchdogDataService dataServiceIn)
+        public MainPageViewModel( IBleDeviceService bleDeviceServiceIn )
         {
-            log = logIn;
-            scanService = scanServiceIn;
-            dataService = dataServiceIn;
-
-            scanServiceIn.DeviceDetected += OnDeviceDetected;
+			BleDeviceService = bleDeviceServiceIn;
+			BleDeviceService.DeviceDetected += OnDeviceDetected;
         }
 
         public string SettingsLabel { get { return EmbeddedResource.SettingsLabel; } }
-        public string DevicePresenceLabel { get { return ResolveDevicePresenceLabel(); } }
-
-        public ICommand OpenSettingsCommand { get { return new OpenSettingsCommand(); } }
-        public ICommand ScanNowCommand { get { return new ScanNowCommand(); } }
-
-        private string ResolveDevicePresenceLabel()
+        public string DeviceStatus { get { return ResolveDeviceStatus(); } }
+		
+		public OpenSettingsCommand OpenSettingsCommand { get; set; }
+		public ScanForDeviceCommand ScanForDeviceCommand { get; set; }
+		public IDataService DataService { get; set; }
+		public IBleDeviceService BleDeviceService { get; private set; }
+		
+		private string ResolveDeviceStatus()
         {
-            var deviceName = scanService.BleDeviceName;
+			if( BleDeviceService.IsDeviceDetected )
+			{
+				var mostRecentReading = DataService.MostRecentReading;
+				var knownCharge = (mostRecentReading != null) && (mostRecentReading.ScanTime - DateTimeOffset.Now) < TimeSpan.FromHours( 1 );
+				var charge = knownCharge ? mostRecentReading.PerCentCharge : 0;
 
-            if ( string.IsNullOrEmpty( deviceName ) )
-            {
-                return EmbeddedResource.NoDevicePresent;
-            }
-            else
-            {
-                return string.Format(EmbeddedResource.BleDevicePresentFormatName, deviceName);
-            }
-        }
+				if ( BleDeviceService.IsDeviceConnected )
+				{
+
+				}
+				
+				if ( knownCharge )
+				{
+					return string.Format( EmbeddedResource.BleDevicePresentFormatNamePerCentCharge, DataService.WatchdogDeviceName, mostRecentReading.PerCentCharge );
+				}
+				else
+				{
+					return string.Format( EmbeddedResource.BleDevicePresentFormatName, DataService.WatchdogDeviceName );
+				}
+			}
+
+			return EmbeddedResource.NoDevicePresent;
+		}
 
         private void OnDeviceDetected(string deviceName)
         {
-            NotifytPropertyChanged(() => DevicePresenceLabel);
+			NotifytViewModelChanged();
         }
 
-        private ILog log;
-        private IBleScanService scanService;
-        private IDT1WatchdogDataService dataService;
-    }
+
+		private ContentPage contentPage;
+	}
 }

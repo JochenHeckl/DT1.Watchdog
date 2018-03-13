@@ -70,11 +70,20 @@ namespace DT1.Watchdog {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The device {0} was detected..
+        ///   Looks up a localized string similar to Device {0} was detected..
         /// </summary>
         public static string BleDevicePresentFormatName {
             get {
                 return ResourceManager.GetString("BleDevicePresentFormatName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device {0} was detected. ⚡ {1}%..
+        /// </summary>
+        public static string BleDevicePresentFormatNamePerCentCharge {
+            get {
+                return ResourceManager.GetString("BleDevicePresentFormatNamePerCentCharge", resourceCulture);
             }
         }
         
@@ -124,11 +133,29 @@ namespace DT1.Watchdog {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan for device.
+        /// </summary>
+        public static string ScanForDeviceLabel {
+            get {
+                return ResourceManager.GetString("ScanForDeviceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsLabel {
             get {
                 return ResourceManager.GetString("SettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of  DT1 Watchdog device.
+        /// </summary>
+        public static string WatchdogBleDeviceNameLabel {
+            get {
+                return ResourceManager.GetString("WatchdogBleDeviceNameLabel", resourceCulture);
             }
         }
         

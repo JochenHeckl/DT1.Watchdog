@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace DT1.Watchdog.Common
 {
-    public interface IBleScanService
+    public interface IBleDeviceService
     {
-        string BleDeviceName { get; }
-    
-        event Action<string> DeviceDetected;
+		event Action<string> DeviceDetected;
+
+		bool IsScanningForDevice { get; }
+		bool IsDeviceDetected { get; }
+		bool IsDeviceConnected { get; }
 
         void ScanForDevice();
         Task<string> ScanReadings();

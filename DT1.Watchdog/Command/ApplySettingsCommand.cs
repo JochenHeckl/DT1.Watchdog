@@ -1,24 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
-using Autofac;
-using Xamarin.Forms;
+using DT1.Watchdog.Common;
+using DT1.Watchdog.ViewModel;
 
 namespace DT1.Watchdog.Command
 {
 	class ApplySettingsCommand : ICommand
 	{
+		public ApplySettingsCommand( SettingsPageViewModel viewModelIn, IBleDeviceService scanServiceIn, IDataService dataServiceIn )
+		{
+			viewModel = viewModelIn;
+			scanService = scanServiceIn;
+			dataService = dataServiceIn;
+		}
+
 		public event EventHandler CanExecuteChanged;
 
 		public bool CanExecute( object parameter )
 		{
-			return true;
+			return (dataService != null && viewModel != null);
 		}
 
 		public void Execute( object parameter )
 		{
-			var navigation = Bootstrap.Container.Resolve<INavigation>();
+			if( dataService.WatchdogDeviceName != viewModel.WatchdogBleDeviceName )
+			{
+				dataService.WatchdogDeviceName = viewModel.WatchdogBleDeviceName;
+				scanService.ScanForDevice();
+			}
 		}
+
+		private IDataService dataService;
+		private SettingsPageViewModel viewModel;
+		private IBleDeviceService scanService;
 	}
 }

@@ -93,8 +93,8 @@ namespace DT1.Watchdog.Droid
 			var containerBuilder = new ContainerBuilder();
 
 			containerBuilder.RegisterType<AndroidLog>().As<ILog>().SingleInstance();
-			containerBuilder.RegisterType<BleScanServicePluginBluetoothLE>().As<IBleScanService>().SingleInstance();
-			containerBuilder.RegisterType<DT1WatchdogDataServiceLocalStorage>().As<IDT1WatchdogDataService>().SingleInstance().WithParameter( TypedParameter.From<Context>( this ) );
+			containerBuilder.RegisterType<BleScanServicePluginBluetoothLE>().As<IBleDeviceService>().SingleInstance();
+			containerBuilder.RegisterType<DataServiceLocalStorage>().As<IDataService>().SingleInstance().WithParameter( TypedParameter.From<Context>( this ) );
 
 			return containerBuilder;
 		}

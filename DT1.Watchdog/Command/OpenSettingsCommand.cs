@@ -5,9 +5,11 @@ using Xamarin.Forms;
 
 namespace DT1.Watchdog.Command
 {
-	public class OpenSettingsCommand : ICommand
+	class OpenSettingsCommand : ICommand
     {
 		public event EventHandler CanExecuteChanged;
+
+		public INavigationAccess NavigationAccess { get; set; }
 
 		public bool CanExecute(object parameter)
         {
@@ -16,8 +18,7 @@ namespace DT1.Watchdog.Command
 
         public void Execute(object parameter)
         {
-			var navigation = Bootstrap.Container.Resolve<INavigation>();
-			navigation.PushAsync( new SettingsPage() );
+			NavigationAccess.Navigation.PushAsync( new SettingsPage() );
         }
 	}
 }

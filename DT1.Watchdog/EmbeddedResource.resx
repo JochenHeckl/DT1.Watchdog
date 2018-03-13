@@ -121,7 +121,10 @@
     <value>Apply</value>
   </data>
   <data name="BleDevicePresentFormatName" xml:space="preserve">
-    <value>The device {0} was detected.</value>
+    <value>Device {0} was detected.</value>
+  </data>
+  <data name="BleDevicePresentFormatNamePerCentCharge" xml:space="preserve">
+    <value>Device {0} was detected. ⚡ {1}%.</value>
   </data>
   <data name="EnableBluetoothBody" xml:space="preserve">
     <value>Do you want to turn on Bluetooth now?</value>
@@ -138,8 +141,14 @@
   <data name="NoDevicePresent" xml:space="preserve">
     <value>No device was detected.</value>
   </data>
+  <data name="ScanForDeviceLabel" xml:space="preserve">
+    <value>Scan for device</value>
+  </data>
   <data name="SettingsLabel" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="WatchdogBleDeviceNameLabel" xml:space="preserve">
+    <value>Name of  DT1 Watchdog device</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
