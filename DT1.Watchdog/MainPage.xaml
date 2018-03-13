@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:DT1.Watchdog"
              xmlns:viewModel="clr-namespace:DT1.Watchdog.ViewModel"
-             x:Class="DT1.Watchdog.MainPage">
+             x:Class="DT1.Watchdog.MainPage"
+             Title="DT1 Watchdog">
 
-        <StackLayout>
-        <Label Text="{Binding DevicePresence}" FontSize="14" />
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="{local:TextResource ResourceKey=SettingsLabel}"
+            Order="Primary"
+            Priority="0"
+            Command="{Binding OpenSettingsCommand}"/>
+        <ToolbarItem Order="Secondary" Text="Item 2" Priority="1" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <Label Text="{Binding DevicePresenceLabel}" FontSize="14" />
         <Button Text="Scan" Command="{Binding ScanNowCommand}"/>
-        </StackLayout>
+    </StackLayout>
+
 
 </ContentPage>

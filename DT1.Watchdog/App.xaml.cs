@@ -6,48 +6,55 @@ using Autofac;
 using DT1.Watchdog.Common;
 using DT1.Watchdog.Common.Logging;
 using DT1.Watchdog.ViewModel;
+using Plugin.BluetoothLE;
 using Xamarin.Forms;
 
 namespace DT1.Watchdog
 {
 	public partial class App : Application
 	{
+        // needed to make Xamarin Preview work
+        public App()
+        {
+            InitializeComponent();
+        }
+
         public App ( ContainerBuilder builder )
 		{
             BootstrapApp(builder);
 
             InitializeComponent();
 
-            MainPage = new DT1.Watchdog.MainPage();
-            MainPage.BindingContext = Bootstrap.Container.Resolve<MainPageViewModel>();
-
-            log = Bootstrap.Container.Resolve<ILog>();
-            log.Debug("Starting DT1.Watchdog Application");
-
+			MainPage = new NavigationPage( new MainPage() );
         }
 
         private void BootstrapApp(ContainerBuilder builder)
         {
             builder.RegisterType<MainPageViewModel>().SingleInstance();
+			builder.RegisterType<SettingsPageViewModel>().SingleInstance();
+			builder.Register( (x) => MainPage.Navigation ).As<INavigation>();
+
             Bootstrap.Container = builder.Build();
         }
 
         protected override void OnStart ()
 		{
+            base.OnStart();
+
             var bleService = Bootstrap.Container.Resolve<IBleScanService>();
             bleService.ScanForDevice();
-		}
+        }
 
 		protected override void OnSleep ()
 		{
-			// Handle when your app sleeps
+            base.OnSleep();
 		}
 
 		protected override void OnResume ()
 		{
-			// Handle when your app resumes
-		}
+            base.OnResume();
+        }
 
-        private ILog log;
+        // private ILog log;
 	}
 }

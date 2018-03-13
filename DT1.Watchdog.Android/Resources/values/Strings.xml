@@ -1,14 +1,3 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="No">No</string>
-  <string name="Yes">Yes</string>
-
-  <string name="NoBle">DT1.Watchdog requires a bluetooth LE capable device.</string>
-  
-  <string name="EnableBluetoothTitle">Bluetooth is diabled</string>
-	<string name="EnableBluetoothBody">Do you want to enable Bluetooth?</string>
-
-  <string name="NoDevicePresent">No ble device was detected.</string>
-  <string name="DevicePresentFormatName">Ble device {0} was detected.</string>
-
 </resources>

@@ -95,7 +95,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\iconNoFrame.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DT1.Watchdog.Common\DT1.Watchdog.Common.csproj">

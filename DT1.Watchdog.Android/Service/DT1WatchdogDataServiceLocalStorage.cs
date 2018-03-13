@@ -15,10 +15,9 @@ namespace DT1.Watchdog.Droid.Service
 {
     class DT1WatchdogDataServiceLocalStorage : IDT1WatchdogDataService
     {
-
-        public DT1WatchdogDataServiceLocalStorage(Context contextIn )
+        public DT1WatchdogDataServiceLocalStorage()
         {
-            context = contextIn;
+            
         }
 
         public string MostRecentDT1DeviceDeviceAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -31,23 +30,9 @@ namespace DT1.Watchdog.Droid.Service
             set;
         }
 
-        public string GetDevicePresentString(string deviceName)
-        {
-            if (string.IsNullOrEmpty(deviceName))
-            {
-                return context.GetString(Resource.String.NoDevicePresent);
-            }
-            else
-            {
-                return string.Format(context.GetString(Resource.String.DevicePresentFormatName), deviceName);
-            }
-        }
-
         public void PersistReading(GlucoseReading reading)
         {
             throw new NotImplementedException();
         }
-
-        private Context context;
     }
 }

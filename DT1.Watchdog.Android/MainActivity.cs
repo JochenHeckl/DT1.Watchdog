@@ -13,90 +13,91 @@ using DT1.Watchdog.Common;
 using DT1.Watchdog.Common.Logging;
 using DT1.Watchdog.Droid.Logging;
 using DT1.Watchdog.Droid.Service;
-
+using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 namespace DT1.Watchdog.Droid
 {
-    [Activity(Label = "DT1.Watchdog", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : FormsAppCompatActivity
-    {
-        protected override void OnCreate(Bundle bundle)
-        {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+	[Activity(
+		Label = "DT1 Watchdog",
+		Icon = "@drawable/icon",
+		Theme = "@style/MainTheme",
+		MainLauncher = true,
+		ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation )]
+	public class MainActivity : FormsAppCompatActivity
+	{
+		protected override void OnCreate( Bundle bundle )
+		{
+			base.OnCreate( bundle );
 
-            base.OnCreate(bundle);
+			Forms.Init( this, bundle );
+			LoadApplication( new App( SetupContainer() ) );
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+			UpdatePermissions();
+			TestDeviceCapabilities();
+		}
 
-            LoadApplication(new App(SetupContainer()));
+		private void UpdatePermissions()
+		{
+			RequestPermissions(
+				new string[]
+				{
+					Manifest.Permission.Bluetooth,
+					Manifest.Permission.BluetoothAdmin,
+					Manifest.Permission.WakeLock,
+					Manifest.Permission.SendSms,
+					Manifest.Permission.ReadContacts,
+					Manifest.Permission.AccessCoarseLocation
+				}, 0 );
+		}
 
-            TestDeviceCapabilities();
-            UpdatePermissions();
-        }
+		private void TestDeviceCapabilities()
+		{
+			var bleSupported = PackageManager.HasSystemFeature( PackageManager.FeatureBluetoothLe );
+			var bluetoothService = GetSystemService( BluetoothService ) as BluetoothManager;
 
-        private void UpdatePermissions()
-        {
-            RequestPermissions(
-                new string[]
-                {
-                    Manifest.Permission.Bluetooth,
-                    Manifest.Permission.BluetoothAdmin,
-                    Manifest.Permission.WakeLock,
-                    Manifest.Permission.SendSms,
-                    Manifest.Permission.ReadContacts,
-                    Manifest.Permission.AccessCoarseLocation
-                }, 0 );
-        }
+			if ( !bleSupported )
+			{
+				Toast.MakeText( this, EmbeddedResource.NoBle, ToastLength.Long ).Show();
+				FinishAffinity();
+				return;
+			}
 
-        private void TestDeviceCapabilities()
-        {
-            var bleSupported = PackageManager.HasSystemFeature(PackageManager.FeatureBluetoothLe);
-            var bluetoothService = GetSystemService(BluetoothService) as BluetoothManager;
+			if ( !bluetoothService.Adapter.IsEnabled )
+			{
+				var dialogBuilder = new AlertDialog.Builder( this );
 
-            if ( !bleSupported )
-            {
-                Toast.MakeText(this, Resource.String.NoBle, ToastLength.Long).Show();
-                FinishAffinity();
-                return;
-            }
-                
-            if(  !bluetoothService.Adapter.IsEnabled )
-            {
-                var dialogBuilder = new AlertDialog.Builder(this);
+				dialogBuilder
+					.SetTitle( EmbeddedResource.EnableBluetoothTitle )
+					.SetMessage( EmbeddedResource.EnableBluetoothBody )
+					.SetNegativeButton( EmbeddedResource.No, NoBluetoothExitApp )
+					.SetPositiveButton( EmbeddedResource.Yes, TurnOnBluetooth );
 
-                dialogBuilder
-                    .SetTitle(Resource.String.EnableBluetoothTitle)
-                    .SetMessage(Resource.String.EnableBluetoothBody)
-                    .SetNegativeButton(Resource.String.No, NoBluetoothExitApp)
-                    .SetPositiveButton(Resource.String.Yes, TurnOnBluetooth);
+				dialogBuilder.Create().Show();
+			}
+		}
 
-                dialogBuilder.Create().Show();
-            }
-        }
+		private void TurnOnBluetooth( object sender, DialogClickEventArgs e )
+		{
+			var bluetoothService = GetSystemService( BluetoothService ) as BluetoothManager;
+			bluetoothService.Adapter.Enable();
+		}
 
-        private void TurnOnBluetooth(object sender, DialogClickEventArgs e)
-        {
-            var bluetoothService = GetSystemService(BluetoothService) as BluetoothManager;
-            bluetoothService.Adapter.Enable();
-        }
+		private void NoBluetoothExitApp( object sender, DialogClickEventArgs e )
+		{
+			FinishAffinity();
+		}
 
-        private void NoBluetoothExitApp(object sender, DialogClickEventArgs e)
-        {
-            FinishAffinity();
-        }
+		private ContainerBuilder SetupContainer()
+		{
+			var containerBuilder = new ContainerBuilder();
 
-        private ContainerBuilder SetupContainer()
-        {
-            var containerBuilder = new ContainerBuilder();
+			containerBuilder.RegisterType<AndroidLog>().As<ILog>().SingleInstance();
+			containerBuilder.RegisterType<BleScanServicePluginBluetoothLE>().As<IBleScanService>().SingleInstance();
+			containerBuilder.RegisterType<DT1WatchdogDataServiceLocalStorage>().As<IDT1WatchdogDataService>().SingleInstance().WithParameter( TypedParameter.From<Context>( this ) );
 
-            containerBuilder.RegisterType<AndroidLog>().As<ILog>().SingleInstance();
-            containerBuilder.RegisterType<BleScanServicePluginBluetoothLE>().As<IBleScanService>().SingleInstance();
-            containerBuilder.RegisterType<DT1WatchdogDataServiceLocalStorage>().As<IDT1WatchdogDataService>().SingleInstance().WithParameter( TypedParameter.From<Context>( this ) );
-
-            return containerBuilder;
-        }
-    }
+			return containerBuilder;
+		}
+	}
 }
 

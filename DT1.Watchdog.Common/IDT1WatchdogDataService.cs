@@ -24,6 +24,5 @@ namespace DT1.Watchdog.Common
         string WatchdogDeviceName { get; set; }
 
         void PersistReading(GlucoseReading reading);
-        string GetDevicePresentString(string deviceName);
     }
 }

@@ -8,7 +8,7 @@ namespace DT1.Watchdog.Common
     public interface IBleScanService
     {
         string BleDeviceName { get; }
-
+    
         event Action<string> DeviceDetected;
 
         void ScanForDevice();

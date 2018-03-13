@@ -4,43 +4,44 @@ using System.ComponentModel;
 using System.Windows.Input;
 using DT1.Watchdog.Common;
 using System;
+using Xamarin.Forms;
 
 namespace DT1.Watchdog.ViewModel
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        public MainPageViewModel( ILog logIn, IBleScanService scanServiceIn, IDT1WatchdogDataService dataServiceIn )
+        public MainPageViewModel(ILog logIn, IBleScanService scanServiceIn, IDT1WatchdogDataService dataServiceIn)
         {
             log = logIn;
             scanService = scanServiceIn;
             dataService = dataServiceIn;
 
             scanServiceIn.DeviceDetected += OnDeviceDetected;
-
-            DevicePresence = dataService.GetDevicePresentString(scanService.BleDeviceName);
         }
 
-        public string DevicePresence { get; set; }
+        public string SettingsLabel { get { return EmbeddedResource.SettingsLabel; } }
+        public string DevicePresenceLabel { get { return ResolveDevicePresenceLabel(); } }
 
-        public ICommand ScanNowCommand
+        public ICommand OpenSettingsCommand { get { return new OpenSettingsCommand(); } }
+        public ICommand ScanNowCommand { get { return new ScanNowCommand(); } }
+
+        private string ResolveDevicePresenceLabel()
         {
-            get
+            var deviceName = scanService.BleDeviceName;
+
+            if ( string.IsNullOrEmpty( deviceName ) )
             {
-                return new ScanNowCommand();
+                return EmbeddedResource.NoDevicePresent;
             }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            else
+            {
+                return string.Format(EmbeddedResource.BleDevicePresentFormatName, deviceName);
+            }
         }
 
         private void OnDeviceDetected(string deviceName)
         {
-            DevicePresence = dataService.GetDevicePresentString(scanService.BleDeviceName);
-            OnPropertyChanged( nameof( DevicePresence ) );
+            NotifytPropertyChanged(() => DevicePresenceLabel);
         }
 
         private ILog log;

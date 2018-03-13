@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Autofac;
+using DT1.Watchdog.ViewModel;
 using Xamarin.Forms;
 
 namespace DT1.Watchdog
@@ -12,6 +9,7 @@ namespace DT1.Watchdog
 		public MainPage()
 		{
 			InitializeComponent();
+			BindingContext = Bootstrap.Container.Resolve<MainPageViewModel>();
 		}
 	}
 }
