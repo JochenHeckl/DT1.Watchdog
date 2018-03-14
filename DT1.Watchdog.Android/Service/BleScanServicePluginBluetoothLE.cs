@@ -46,7 +46,14 @@ namespace DT1.Watchdog.Droid.Service
 
 		public void ScanForDevice()
 		{
-			CrossBleAdapter.Current.Scan().Subscribe( FilterWatchdogDevice );
+			if ( CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn )
+			{
+				CrossBleAdapter.Current.Scan().Subscribe( FilterWatchdogDevice );
+			}
+			else
+			{
+				CrossBleAdapter.Current.ScanWhenAdapterReady().Subscribe( FilterWatchdogDevice );
+			}
 		}
 
 		public async Task<string> ScanReadings()

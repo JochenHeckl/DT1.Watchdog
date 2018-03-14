@@ -65,21 +65,15 @@ namespace DT1.Watchdog.Droid
 
 			if ( !bluetoothService.Adapter.IsEnabled )
 			{
-				var dialogBuilder = new AlertDialog.Builder( this );
-
-				dialogBuilder
-					.SetTitle( EmbeddedResource.EnableBluetoothTitle )
-					.SetMessage( EmbeddedResource.EnableBluetoothBody )
-					.SetNegativeButton( EmbeddedResource.No, NoBluetoothExitApp )
-					.SetPositiveButton( EmbeddedResource.Yes, TurnOnBluetooth );
-
-				dialogBuilder.Create().Show();
+				Intent enableBtIntent = new Intent( BluetoothAdapter.ActionRequestEnable );
+				StartActivityForResult( enableBtIntent, 1 );
 			}
 		}
 
 		private void TurnOnBluetooth( object sender, DialogClickEventArgs e )
 		{
 			var bluetoothService = GetSystemService( BluetoothService ) as BluetoothManager;
+
 			bluetoothService.Adapter.Enable();
 		}
 
