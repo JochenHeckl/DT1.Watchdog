@@ -7,13 +7,15 @@ namespace DT1.Watchdog.Common
 {
     public interface IBleDeviceService
     {
-		event Action<string> DeviceDetected;
+		event Action DeviceDetected;
+		event Action<bool> DeviceConnectionStateChanged;
 
 		bool IsScanningForDevice { get; }
 		bool IsDeviceDetected { get; }
 		bool IsDeviceConnected { get; }
+		string DeviceName { get; }
 
-        void ScanForDevice();
-        Task<string> ScanReadings();
+		void ScanForDevice();
+        Task ScanReadingsAsync();
     }
 }

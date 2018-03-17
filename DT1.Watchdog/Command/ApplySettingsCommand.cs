@@ -7,12 +7,9 @@ namespace DT1.Watchdog.Command
 {
 	class ApplySettingsCommand : ICommand
 	{
-		public ApplySettingsCommand( SettingsPageViewModel viewModelIn, IBleDeviceService scanServiceIn, IDataService dataServiceIn )
-		{
-			viewModel = viewModelIn;
-			scanService = scanServiceIn;
-			dataService = dataServiceIn;
-		}
+		public SettingsPageViewModel SettingsPageViewModel { get; set; }
+		public IBleDeviceService DeviceService { get; set; }
+		public IDataService DataService { get; set; }
 
 		public event EventHandler CanExecuteChanged;
 

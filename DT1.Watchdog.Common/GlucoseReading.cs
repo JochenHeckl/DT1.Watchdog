@@ -21,46 +21,92 @@ namespace DT1.Watchdog.Common
             TransmissionError = 8
         }
 
-        public static GlucoseReading ParseRawCharacteristicData(byte[] data, DateTimeOffset date)
-        {
-            if (data[0] == 0xff)
-            {
-                if (data[1] != (byte)ReadingErrorCode.NoError)
-                {
-                    return new GlucoseReading()
-                    {
-                        ErrorCode = (ReadingErrorCode)data[1],
-                        Voltage = BitConverter.ToUInt16(data, 2),
-                        PerCentCharge = data[4],
-                        ScanTime = date.UtcDateTime
-                    };
-                }
+		public static GlucoseReading ParseRawCharacteristicData( byte[] data, DateTimeOffset date )
+		{
+			if ( data[ 0 ] == 0xff )
+			{
+				return new GlucoseReading()
+				{
+					ErrorCode = (ReadingErrorCode)data[ 1 ],
+					Voltage = BitConverter.ToUInt16( data, 2 ),
+					PerCentCharge = data[ 4 ],
+					ScanTime = date.UtcDateTime
+				};
+			}
 
-                if (data.Length == 14)
-                {
-                    return new GlucoseReading()
-                    {
-                        ErrorCode = (ReadingErrorCode)data[1],
-                        RollingTableIndex = data[2],
-                        GlucoseLatest = Convert.ToDouble(BitConverter.ToUInt16(data, 3)) * 0.1,
-                        GlucoseLatestButOne = Convert.ToDouble(BitConverter.ToUInt16(data, 5)) * 0.1,
-                        GlucoseLatestButTwo = Convert.ToDouble(BitConverter.ToUInt16(data, 7)) * 0.1,
-                        ElapsedMinutes = BitConverter.ToUInt16(data, 9),
-                        Voltage = BitConverter.ToUInt16(data, 11),
-                        PerCentCharge = data[13],
-                        ScanTime = date.UtcDateTime
-                    };
-                }
-            }
+			if ( data.Length == 12 )
+			{
+				return new GlucoseReading()
+				{
+					ErrorCode = ReadingErrorCode.NoError,
+					RollingTableIndex = data[ 0 ],
+					GlucoseLatest = Convert.ToDouble( BitConverter.ToUInt16( data, 1 ) ) * 0.1,
+					GlucoseLatestButOne = Convert.ToDouble( BitConverter.ToUInt16( data, 3 ) ) * 0.1,
+					GlucoseLatestButTwo = Convert.ToDouble( BitConverter.ToUInt16( data, 5 ) ) * 0.1,
+					ElapsedMinutes = BitConverter.ToUInt16( data, 7 ),
+					Voltage = BitConverter.ToUInt16( data, 9 ),
+					PerCentCharge = data[ 11 ],
+					ScanTime = date.UtcDateTime
+				};
+			}
 
-            return new GlucoseReading()
-            {
-                ErrorCode = ReadingErrorCode.TransmissionError,
-                ScanTime = date.UtcDateTime
-            };
-        }
+			return new GlucoseReading()
+			{
+				ErrorCode = ReadingErrorCode.TransmissionError,
+				ScanTime = date.UtcDateTime
+			};
+		}
 
-        public static GlucoseReading ParseRawCharacteristicData( byte[] data )
+		//public static GlucoseReading ParseRawCharacteristicData( byte[] data, DateTimeOffset date )
+		//{
+		//	// throw new InvalidOperationException("This can not yet be used! We first have to change the hardware");
+
+		//	var scanIsValid = (data[ 0 ] == (byte)ReadingErrorCode.NoError) && data.Length == 13;
+
+		//	if ( !scanIsValid )
+		//	{
+		//		return new GlucoseReading()
+		//		{
+		//			ScanTime = date.UtcDateTime,
+		//			ErrorCode = (ReadingErrorCode)data[ 0 ],
+		//			Voltage = BitConverter.ToUInt16( data, 1 ),
+		//			PerCentCharge = data[ 3 ]
+		//		};
+		//	}
+
+		//	if ( data.Length == 16 )
+		//	{
+		//		return new GlucoseReading()
+		//		{
+		//			ScanTime = date.UtcDateTime,
+		//			ErrorCode = (ReadingErrorCode)data[ 0 ],
+		//			Voltage = BitConverter.ToUInt16( data, 1 ),
+		//			PerCentCharge = data[ 3 ],
+
+		//			RollingTableIndex = data[ 4 ],
+
+		//			GlucoseLatest = Convert.ToDouble( BitConverter.ToUInt16( data, 5 ) ) * 0.1,
+		//			GlucoseLatestButOne = Convert.ToDouble( BitConverter.ToUInt16( data, 7 ) ) * 0.1,
+		//			GlucoseLatestButTwo = Convert.ToDouble( BitConverter.ToUInt16( data, 9 ) ) * 0.1,
+
+		//			TemperatureLatest = Convert.ToDouble( BitConverter.ToUInt16( data, 2 ) ) * 0.1,
+		//			TemperatureLatestButOne = Convert.ToDouble( BitConverter.ToUInt16( data, 4 ) ) * 0.1,
+		//			TemperatureLatestButTwo = Convert.ToDouble( BitConverter.ToUInt16( data, 6 ) ) * 0.1,
+
+		//			ElapsedMinutes = BitConverter.ToUInt16( data, 8 ),
+		//			Voltage = BitConverter.ToUInt16( data, 10 ),
+		//			PerCentCharge = data[ 12 ]
+		//		};
+		//	}
+
+		//	return new GlucoseReading()
+		//	{
+		//		ErrorCode = ReadingErrorCode.TransmissionError,
+		//		ScanTime = date.UtcDateTime
+		//	};
+		//}
+
+		public static GlucoseReading ParseRawCharacteristicData( byte[] data )
         {
             return ParseRawCharacteristicData(data, DateTimeOffset.Now);
         }

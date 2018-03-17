@@ -15,13 +15,17 @@ namespace DT1.Watchdog.ViewModel
         {
 			BleDeviceService = bleDeviceServiceIn;
 			BleDeviceService.DeviceDetected += OnDeviceDetected;
-        }
+			BleDeviceService.DeviceConnectionStateChanged += OnDeviceConnectionChanged;
 
-        public string SettingsLabel { get { return EmbeddedResource.SettingsLabel; } }
+		}
+
+		public string SettingsLabel { get { return EmbeddedResource.SettingsLabel; } }
         public string DeviceStatus { get { return ResolveDeviceStatus(); } }
 		
 		public OpenSettingsCommand OpenSettingsCommand { get; set; }
 		public ScanForDeviceCommand ScanForDeviceCommand { get; set; }
+		public ScanReadingCommand ScanReadingCommand { get; set; }
+
 		public IDataService DataService { get; set; }
 		public IBleDeviceService BleDeviceService { get; private set; }
 		
@@ -35,7 +39,7 @@ namespace DT1.Watchdog.ViewModel
 
 				if ( BleDeviceService.IsDeviceConnected )
 				{
-
+					return string.Format( EmbeddedResource.BleDeviceConnectedFormatName, DataService.WatchdogDeviceName );
 				}
 				
 				if ( knownCharge )
@@ -51,12 +55,14 @@ namespace DT1.Watchdog.ViewModel
 			return EmbeddedResource.NoDevicePresent;
 		}
 
-        private void OnDeviceDetected(string deviceName)
+        private void OnDeviceDetected()
         {
 			NotifytViewModelChanged();
         }
 
-
-		private ContentPage contentPage;
+		private void OnDeviceConnectionChanged( bool isConnected )
+		{
+			NotifytViewModelChanged();
+		}
 	}
 }

@@ -120,6 +120,9 @@
   <data name="ApplyLabel" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="BleDeviceConnectedFormatName" xml:space="preserve">
+    <value>Device {0} is connected.</value>
+  </data>
   <data name="BleDevicePresentFormatName" xml:space="preserve">
     <value>Device {0} was detected.</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="ScanForDeviceLabel" xml:space="preserve">
     <value>Scan for device</value>
+  </data>
+  <data name="ScanReadingLabel" xml:space="preserve">
+    <value>Scan Reading</value>
   </data>
   <data name="SettingsLabel" xml:space="preserve">
     <value>Settings</value>

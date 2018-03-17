@@ -9,18 +9,30 @@ namespace DT1.Watchdog.Command
     {
         public event EventHandler CanExecuteChanged = delegate { };
 
-		public ILog Log { get; set; }
-		public IBleDeviceService ScanService { get; set; }
+		public ScanReadingCommand( IBleDeviceService deviceServiceIn )
+		{
+			deviceService = deviceServiceIn;
+			deviceService.DeviceDetected += OnDeviceDetected;
+		}
 
+		private void OnDeviceDetected()
+		{
+			CanExecuteChanged( this, null );
+		}
+
+		public ILog Log { get; set; }
+		
 		public bool CanExecute(object parameter)
         {
-            return ScanService.IsDeviceDetected;
+            return deviceService.IsDeviceDetected && !deviceService.IsDeviceConnected;
         }
 
         public void Execute(object parameter)
         {
             Log.Debug("Executing Scan...");
-			ScanService.ScanForDevice();
+			deviceService.ScanReadingsAsync();
 		}
+
+		private IBleDeviceService deviceService;
 	}
 }

@@ -36,9 +36,10 @@ namespace DT1.Watchdog
             builder.RegisterType<MainPageViewModel>().SingleInstance().PropertiesAutowired();
 			builder.RegisterType<SettingsPageViewModel>().SingleInstance().PropertiesAutowired();
 
-			builder.RegisterType<ApplySettingsCommand>();
+			builder.RegisterType<ApplySettingsCommand>().PropertiesAutowired();
 			builder.RegisterType<OpenSettingsCommand>().PropertiesAutowired();
-			builder.RegisterType<ScanForDeviceCommand>();
+			builder.RegisterType<ScanForDeviceCommand>().PropertiesAutowired();
+			builder.RegisterType<ScanReadingCommand>().PropertiesAutowired();
 
 			builder.RegisterInstance( this ).As<INavigationAccess>();
 

@@ -70,6 +70,15 @@ namespace DT1.Watchdog {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device {0} is connected..
+        /// </summary>
+        public static string BleDeviceConnectedFormatName {
+            get {
+                return ResourceManager.GetString("BleDeviceConnectedFormatName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device {0} was detected..
         /// </summary>
         public static string BleDevicePresentFormatName {
@@ -138,6 +147,15 @@ namespace DT1.Watchdog {
         public static string ScanForDeviceLabel {
             get {
                 return ResourceManager.GetString("ScanForDeviceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan Reading.
+        /// </summary>
+        public static string ScanReadingLabel {
+            get {
+                return ResourceManager.GetString("ScanReadingLabel", resourceCulture);
             }
         }
         

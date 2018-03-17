@@ -12,11 +12,19 @@
             Order="Primary"
             Priority="0"
             Command="{Binding OpenSettingsCommand}"/>
+        
         <ToolbarItem
             Text="{local:TextResource ResourceKey=ScanForDeviceLabel}"
             Order="Secondary"
             Priority="1"
             Command="{Binding ScanForDeviceCommand}"/>
+
+        <ToolbarItem
+            Text="{local:TextResource ResourceKey=ScanReadingLabel}"
+            Order="Secondary"
+            Priority="2"
+            Command="{Binding ScanReadingCommand}"/>
+        
     </ContentPage.ToolbarItems>
 
     <StackLayout Margin="4">
